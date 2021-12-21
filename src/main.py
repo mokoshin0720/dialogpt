@@ -3,4 +3,4 @@
 from train.main import train
 
 if __name__ == "__main__":
-    train('microsoft/DialoGPT-small', 3)
+    train('microsoft/DialoGPT-small', 100)
