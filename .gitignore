@@ -1,0 +1,10 @@
+__pycache__/
+.vscode/
+data/
+cached/
+*.json
+.env
+events.out.*
+*.csv
+.DS_Store
+runs/
