@@ -2,7 +2,7 @@ from . import config
 import torch
 
 def train(model_name: str, epochs: int):
-    model, tokenizer, optimizer = config.prepare(model_name)
+    model, tokenizer, optimizer = config.prepare_train(model_name)
     text_1 = "Who was Jim Henson is is ?"
     text_2 = "Jim Henson was a puppeteer"
     encoded_1 = tokenizer.encode(text_1)
