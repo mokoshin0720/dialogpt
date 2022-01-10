@@ -8,3 +8,4 @@ events.out.*
 *.csv
 .DS_Store
 runs/
+*.pth
