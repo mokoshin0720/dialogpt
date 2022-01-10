@@ -23,7 +23,7 @@ def model_eval(model, tokenizer, optimizer, eval_dateloader):
         optimizer.step()
 
 def print_output(tokenizer, model):
-    load_path = 'src/evaluate/model_tmp.pth'
+    load_path = 'src/evaluate/model_tmp2.pth'
     load_weights = torch.load(load_path)
     model.load_state_dict(load_weights)
     
@@ -31,13 +31,12 @@ def print_output(tokenizer, model):
     model.to(device)
     
     model.eval()
-    
-    
-    input_sentence = tokenizer.encode(input(">> User:") + tokenizer.eos_token, return_tensors='pt')
-    output_sentence = model.generate(
-    input_sentence, max_length=1000,
-    pad_token_id=tokenizer.eos_token_id
-    )
-    
-    reply = tokenizer.decode(output_sentence[0], skip_special_tokens=True)
-    print("DialoGPT: {}".format(reply))
+    for step in range(5):
+        user_input = tokenizer.encode(input(">> User:") + tokenizer.eos_token, return_tensors='pt')
+        
+        bot_input = torch.cat([bot_output, user_input], dim=-1) if step > 0 else user_input
+        
+        bot_output = model.generate(bot_input, max_length=1000, pad_token_id=tokenizer.eos_token_id)
+        
+        print("DialoGPT: {}".format(tokenizer.decode(bot_output[:, bot_input.shape[-1]:][0], skip_special_tokens=True)))
+        print(bot_output)

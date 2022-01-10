@@ -2,7 +2,7 @@ from . import config
 import torch
 
 def model_train(model, tokenizer, optimizer, train_dataloader):
-    epochs = 10
+    epochs = 2
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
     model.to(device)
     for epoch in range(0, epochs):
