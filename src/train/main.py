@@ -31,5 +31,5 @@ def model_train(model, tokenizer, optimizer, train_dataloader):
             # scheduler.step()
             # print(loss)
             
-    model_path = 'model.pth'
-    torch.save(model.state_dict(), model_path)
+    model_path = 'same_input_output.pth'
+    torch.save(model.to("cpu").state_dict(), model_path)

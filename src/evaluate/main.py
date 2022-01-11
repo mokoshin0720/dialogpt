@@ -23,7 +23,7 @@ def model_eval(model, tokenizer, optimizer, eval_dateloader):
         optimizer.step()
 
 def print_output(tokenizer, model):
-    load_path = 'src/evaluate/model_tmp2.pth'
+    load_path = 'src/evaluate/same_input_output.pth'
     load_weights = torch.load(load_path)
     model.load_state_dict(load_weights)
     

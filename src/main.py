@@ -19,4 +19,7 @@ from evaluate.main import *
     
 if __name__ == "__main__":
     model, tokenizer, optimizer = prepare_train('microsoft/DialoGPT-small')
-    print_output(tokenizer=tokenizer, model=model)
+    # print_output(tokenizer=tokenizer, model=model)
+    for i in range(100):
+        text = input("input word: ")
+        print(tokenizer(text)['input_ids'])
