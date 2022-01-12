@@ -1,5 +1,6 @@
 import nltk
 import enchant
+import re
 import pandas as pd
 
 def is_available_sentence(sentence):
@@ -7,6 +8,13 @@ def is_available_sentence(sentence):
         if d.check(w) == False and w.isdecimal() == False:
             return False
     return True
+
+def cleaning(sentence):
+    sentence = sentence.lstrip().rstrip()
+    sentence = re.sub(r'!+', '.', sentence)
+    sentence = re.sub(r'\?+', '?', sentence)
+    return sentence
+    
 
 if __name__ == "__main__":
     nltk.download("punkt")
@@ -26,24 +34,35 @@ if __name__ == "__main__":
     d.add("2nd")
     d.add("doesn")
 
-    data = pd.read_csv("src/data/twitter_conversation.csv")
+    data = pd.read_csv("scrape_twitter/5row.csv")
     data = data.dropna(how="any")
 
     all_sentence_cnt = 0
     ok_sentence_cnt = 0
-    out_df = pd.DataFrame(columns=["reply", "context"])
+    out_df = pd.DataFrame(columns=["reply", "context1", "context2", "context3", "context4"])
     for _, row in data.iterrows():
         all_sentence_cnt += 1
         is_exist = True
-        context = nltk.word_tokenize(row[1])
-        if is_available_sentence(context) == False:
+        
+        for i in range(5):
+            sentence = nltk.word_tokenize(row[i])
+            if is_available_sentence(sentence) == False:
+                is_exist = False
+                continue
+            
+        if is_exist == False:
             continue
         
-        reply = nltk.word_tokenize(row[0])
-        if is_available_sentence(reply) == False:
-            continue
-        
-        out_df = out_df.append({"reply": row[0], "context": row[1]}, ignore_index=True)
+        out_df = out_df.append(
+            {
+                "reply": cleaning(row[0]), 
+                "context1": cleaning(row[1]), 
+                "context2": cleaning(row[2]), 
+                "context3": cleaning(row[3]), 
+                "context4": cleaning(row[4]), 
+            }, 
+            ignore_index=True
+            )
         ok_sentence_cnt += 1
         
     percent = ok_sentence_cnt/all_sentence_cnt * 100
